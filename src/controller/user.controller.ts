@@ -63,7 +63,7 @@ export async function loginUserHandler(req: Request<{}, {}>, res: Response) {
     return res.status(200).json({
         msg: 'LOGIN_SUCCESSFUL',
         status: true,
-        token: accessToken,
+        accessoken: accessToken,
         refreshToken: refreshToken
     });
 }

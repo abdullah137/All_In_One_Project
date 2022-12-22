@@ -5,7 +5,7 @@ const requireUser = (req: Request, res: Response, next: NextFunction) => {
     if (!user) {
         return res.status(403).json({
             error: 'REQUIRE_USER_AUTHENTICATION',
-            status: true,
+            status: false,
             msg: 'Sorry, You are not authorized to access this. Kindly login'
         });
     }

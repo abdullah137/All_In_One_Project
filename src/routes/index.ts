@@ -1,11 +1,19 @@
 import express, { Request, Response } from 'express';
 import user from './user.routes';
+import shortner from './url.routes';
 
 const router = express.Router();
 
+router.get('/', (req: Request, res: Response) => {
+    return res.json({
+        msg: 'Welcome to the all in one project',
+        status: 200
+    });
+});
+
 // healthcheck status
 router.get('/healthcheck', (req: Request, res: Response) => {
-    res.json({
+    return res.json({
         msg: 'Welcome to the all in one project',
         status: 200
     });
@@ -15,6 +23,7 @@ router.get('/healthcheck', (req: Request, res: Response) => {
 router.use(user);
 
 // Url-Shorther Routes
+router.use(shortner);
 
 // Background Remover Routes
 
