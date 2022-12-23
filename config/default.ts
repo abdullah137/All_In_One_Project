@@ -15,6 +15,7 @@ const REFRESH_TOKEN_PRIVATE_KEY = process.env.REFRESH_TOKEN_PRIVATE_KEY ? String
 const REFRESH_TOKEN_PUBLIC_KEY = process.env.REFRESH_TOKEN_PUBLIC_KEY ? String(process.env.REFRESH_TOKEN_PUBLIC_KEY) : '';
 const ACCESS_TOKEN_TIMELINE = process.env.ACCESS_TOKEN_TIMELINE ? String(process.env.ACCESS_TOKEN_TIMELINE) : '';
 const REFRESH_TOKEN_TIMELINE = process.env.REFRESH_TOKEN_TIMELINE ? String(process.env.REFRESH_TOKEN_TIMELINE) : '';
+const BITLY_ACCESS_TOKEN = process.env.BITLY_ACCESS_TOKEN ? String(process.env.BITLY_ACCESS_TOKEN) : '';
 
 export const config = {
     mongo: {
@@ -33,5 +34,8 @@ export const config = {
         refresh_token_public_key: REFRESH_TOKEN_PUBLIC_KEY,
         access_token_timeline: ACCESS_TOKEN_TIMELINE,
         refresh_token_timeline: REFRESH_TOKEN_TIMELINE
+    },
+    thirdParty: {
+        bitlyAccesssToken: BITLY_ACCESS_TOKEN
     }
 };
