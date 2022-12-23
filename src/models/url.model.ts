@@ -25,6 +25,6 @@ const urlSchema = new mongoose.Schema(
     { timestamps: true }
 );
 
-const urlModule = mongoose.model<UrlDocument>('Url', urlSchema);
+const urlModel = mongoose.model<UrlDocument>('Url', urlSchema);
 
-export default UserModel;
+export default urlModel;
