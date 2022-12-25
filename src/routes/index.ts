@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import user from './user.routes';
 import shortner from './url.routes';
+import bgRemover from './bg.routes';
 
 const router = express.Router();
 
@@ -26,5 +27,6 @@ router.use(user);
 router.use(shortner);
 
 // Background Remover Routes
+router.use(bgRemover);
 
 export default router;
