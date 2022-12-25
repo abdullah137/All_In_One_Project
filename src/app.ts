@@ -6,8 +6,6 @@ import connectDatabase from './database/connect';
 import deserializeUser from './middleware/deserializeUser';
 import router from './routes';
 
-const port = config.server.port;
-
 const app = express();
 
 // Setting Middlewares here
@@ -25,6 +23,8 @@ app.all('*', (req: Request, res: Response) => {
         message: 'Sorry, the route does not exist on the server'
     });
 });
+
+const port = config.server.port;
 
 app.listen(port, () => {
     logger.info(`App started on http://localhost:${port}`);
