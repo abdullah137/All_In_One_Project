@@ -1,8 +1,9 @@
 import { FilterQuery, QueryOptions, UpdateQuery } from 'mongoose';
 import logger from '../utils/logger';
-import UrlModel, { UrlDocument, UrlInput } from '../models/url.model';
+import UrlModel, { UrlDocument } from '../models/url.model';
+import mongoose from 'mongoose';
 
-export async function createUrl(input: UrlInput) {
+export async function createUrl(input: object) {
     try {
         const url = await UrlModel.create(input);
 
@@ -12,9 +13,9 @@ export async function createUrl(input: UrlInput) {
     }
 }
 
-export async function findUrlInformation(urlId: string) {
+export async function findUrlInformation(urlId: string, userId: string) {
     try {
-        return UrlModel.findOne({ urlId: urlId });
+        return UrlModel.findOne({ urlId: urlId, user: new mongoose.Types.ObjectId(userId) });
     } catch (e: any) {
         logger.error(e.message);
     }
@@ -26,4 +27,20 @@ export async function findAndUpdateUrl(query: FilterQuery<UrlDocument>, update: 
 
 export async function deleteUrl(query: FilterQuery<UrlDocument>) {
     return UrlModel.deleteOne(query);
+}
+
+export async function findOneUrl(dbId: string) {
+    try {
+        return UrlModel.findById(dbId);
+    } catch (e: any) {
+        logger.error(e.message);
+    }
+}
+
+export async function findAllLinks(userId: string) {
+    try {
+        return UrlModel.find<UrlDocument>({ user: new mongoose.Types.ObjectId(userId) });
+    } catch (e: any) {
+        logger.error(e.messag);
+    }
 }
