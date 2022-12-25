@@ -16,4 +16,7 @@ router.get('/url-shortner/:url', requireUser, retriveLink);
 // Delete A Link
 router.delete('/url-shortner/:id', requireUser, deleteLink);
 
+// Update Link
+router.patch('/url-shortner/:id', requireUser);
+
 export default router;
