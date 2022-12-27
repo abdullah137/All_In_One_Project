@@ -1,6 +1,6 @@
 #dependency folder
-
 node_modules
+
 # environment variables
 .env
 
@@ -22,3 +22,6 @@ logs
 *.log
 yarn-debug.log*
 yarn-error.log*
+
+#folder
+public
