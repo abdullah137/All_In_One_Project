@@ -5,6 +5,7 @@ import bgRemover from './bg.routes';
 
 const router = express.Router();
 
+// Welcome Endpoint
 router.get('/', (req: Request, res: Response) => {
     return res.json({
         msg: 'Welcome to the all in one project',
