@@ -15,7 +15,15 @@ const REFRESH_TOKEN_PRIVATE_KEY = process.env.REFRESH_TOKEN_PRIVATE_KEY ? String
 const REFRESH_TOKEN_PUBLIC_KEY = process.env.REFRESH_TOKEN_PUBLIC_KEY ? String(process.env.REFRESH_TOKEN_PUBLIC_KEY) : '';
 const ACCESS_TOKEN_TIMELINE = process.env.ACCESS_TOKEN_TIMELINE ? String(process.env.ACCESS_TOKEN_TIMELINE) : '';
 const REFRESH_TOKEN_TIMELINE = process.env.REFRESH_TOKEN_TIMELINE ? String(process.env.REFRESH_TOKEN_TIMELINE) : '';
+
 const BITLY_ACCESS_TOKEN = process.env.BITLY_ACCESS_TOKEN ? String(process.env.BITLY_ACCESS_TOKEN) : '';
+
+const FIREBASE_APPID = process.env.APPID ? String(process.env.APPID) : '';
+const FIREBASE_PRIVATE_KEY_JSON = process.env.FIREBASE_PRIVATE_KEY_JSON ? String(process.env.FIREBASE_PRIVATE_KEY_JSON) : '';
+const FIREBASE_MESSAGING_SENDER_ID = process.env.FIREBASE_MESSAGING_SENDER_ID ? String(process.env.FIREBASE_MESSAGING_SENDER_ID) : '';
+const FIREBASE_STORAGE_BUCKET = process.env.FIREBASE_STORAGE_BUCKET ? String(process.env.FIREBASE_STORAGE_BUCKET) : '';
+const FIREBASE_AUTHDOMAIN = process.env.FIREBASE_AUTHDOMAIN ? String(process.env.FIREBASE_AUTHDOMAIN) : '';
+const PROJECT_ID = process.env.PROJECT_ID ? String(process.env.PROJECT_ID) : '';
 
 export const config = {
     mongo: {
@@ -37,5 +45,13 @@ export const config = {
     },
     thirdParty: {
         bitlyAccesssToken: BITLY_ACCESS_TOKEN
+    },
+    firebase: {
+        appId: FIREBASE_APPID,
+        privateKeyJson: FIREBASE_PRIVATE_KEY_JSON,
+        messageSenderId: FIREBASE_MESSAGING_SENDER_ID,
+        authDomain: FIREBASE_AUTHDOMAIN,
+        bucket: FIREBASE_STORAGE_BUCKET,
+        projectId: PROJECT_ID
     }
 };
