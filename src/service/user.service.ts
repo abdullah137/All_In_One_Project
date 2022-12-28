@@ -20,6 +20,14 @@ export async function findUserByEmail(email: string) {
     }
 }
 
+export async function findUserByUserName(username: string) {
+    try {
+        return UserModel.findOne({ username });
+    } catch (e: any) {
+        throw new Error(e);
+    }
+}
+
 export async function userLogin({ email, password }: { email: string; password: string }) {
     const user = await UserModel.findOne({ email: email });
 
@@ -35,5 +43,7 @@ export async function userLogin({ email, password }: { email: string; password: 
 }
 
 export async function findUser(query: FilterQuery<UserDocument>) {
-    return UserModel.findOne(query).lean();
+    const userInformation = await UserModel.findOne(query).lean();
+
+    return omit(userInformation, 'password');
 }
