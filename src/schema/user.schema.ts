@@ -1,8 +1,9 @@
+import { stubString } from 'lodash';
 import { object, string, TypeOf } from 'zod';
 
 export const createUserSchema = object({
     body: object({
-        name: string({
+        username: string({
             required_error: 'Name is required'
         }),
         password: string({
@@ -31,6 +32,33 @@ export const loginUserSchema = object({
     })
 });
 
+const payload = {
+    body: object({
+        username: string({
+            required_error: 'Username is required'
+        }),
+        email: string({
+            required_error: 'Email is required'
+        }).email('Not A Valid Email'),
+        password: string()
+    })
+};
+
+const params = {
+    params: object({
+        userId: string({
+            required_error: 'User ID is required'
+        })
+    })
+};
+
+export const updateUserProfile = object({
+    ...payload,
+    ...params
+});
+
 export type CreateUserInput = Omit<TypeOf<typeof createUserSchema>, 'body.passwordConfimation'>;
 
 export type createSessionInput = TypeOf<typeof loginUserSchema>['body'];
+
+export type updateUserInput = TypeOf<typeof updateUserProfile>;
