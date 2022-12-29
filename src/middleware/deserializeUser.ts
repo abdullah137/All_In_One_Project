@@ -31,6 +31,12 @@ const deserializeUser = async (req: Request, res: Response, next: NextFunction) 
             res.locals.user = result.decoded;
             return next();
         }
+    } else {
+        return res.status(400).json({
+            err: 'ACCESS_TOKEN_EXPRIES',
+            status: false,
+            message: 'Please Enter A New Access Token '
+        });
     }
     return next();
 };
