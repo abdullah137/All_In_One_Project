@@ -108,10 +108,20 @@ export async function createUrlHandler(req: Request, res: Response) {
 export async function retriveLink(req: Request, res: Response) {
     const user = res.locals.user;
 
-    // parms
-    const url = req.params.url;
+    // params
+    const url = req.params.id as string;
+
+    // check if id is valid
+    if (!isObjectIdOrHexString(url)) {
+        return res.status(400).json({
+            err: 'INVALID_ID',
+            status: false,
+            message: 'Sorry, id is not valid'
+        });
+    }
+
     try {
-        const fetchLink = await findUrlInformation(user._doc._id, url);
+        const fetchLink = await findUrlInformation(url, user._doc._id);
 
         if (!fetchLink) {
             return res.status(404).json({
@@ -121,6 +131,7 @@ export async function retriveLink(req: Request, res: Response) {
             });
         }
 
+        // fetch the result
         return res.status(200).json({
             msg: 'QUERY_SUCCESSFUL',
             status: true,
