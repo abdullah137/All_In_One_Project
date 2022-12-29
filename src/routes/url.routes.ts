@@ -5,13 +5,13 @@ import requireUser from '../middleware/requireUser';
 const router = express.Router();
 
 // Create a link
-router.post('/url-shortener', requireUser, createUrlHandler);
+router.post('/url-shortner', requireUser, createUrlHandler);
 
 // Get All Links
-router.get('/url-shortener', requireUser, getAllLinks);
+router.get('/url-shortner', requireUser, getAllLinks);
 
 // Fetch Just A Link
-router.get('/url-shortner/:url', requireUser, retriveLink);
+router.get('/url-shortner/:id', requireUser, retriveLink);
 
 // Delete A Link
 router.delete('/url-shortner/:id', requireUser, deleteLink);
