@@ -13,9 +13,9 @@ export async function createUrl(input: object) {
     }
 }
 
-export async function findUrlInformation(urlId: string, userId: string) {
+export async function findUrlInformation(id: string, userId: string) {
     try {
-        return UrlModel.findOne({ urlId: urlId, user: new mongoose.Types.ObjectId(userId) });
+        return UrlModel.findOne({ _id: id, user: userId });
     } catch (e: any) {
         logger.error(e.message);
     }
