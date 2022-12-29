@@ -1,4 +1,4 @@
-import { FilterQuery } from 'mongoose';
+import { FilterQuery, QueryOptions, UpdateQuery } from 'mongoose';
 import { omit } from 'lodash';
 import UserModel, { UserDocument, UserInput } from '../models/user.model';
 
@@ -46,4 +46,12 @@ export async function findUser(query: FilterQuery<UserDocument>) {
     const userInformation = await UserModel.findOne(query).lean();
 
     return omit(userInformation, 'password');
+}
+
+export async function updateProfile(query: FilterQuery<UserDocument>, update: UpdateQuery<UserDocument>, options: QueryOptions) {
+    try {
+        return UserModel.findOneAndUpdate(query, update, options);
+    } catch (e: any) {
+        throw new Error(e);
+    }
 }
