@@ -25,11 +25,18 @@ const FIREBASE_STORAGE_BUCKET = process.env.FIREBASE_STORAGE_BUCKET ? String(pro
 const FIREBASE_AUTHDOMAIN = process.env.FIREBASE_AUTHDOMAIN ? String(process.env.FIREBASE_AUTHDOMAIN) : '';
 const PROJECT_ID = process.env.PROJECT_ID ? String(process.env.PROJECT_ID) : '';
 
+const GMAIL_USERNAME = process.env.GMAIL_USERNAME ? String(process.env.GMAIL_USERNAME) : '';
+const GMAIL_PASSWORD = process.env.GMAIL_PASSWORD ? String(process.env.GMAIL_PASSWORD) : '';
+
 export const config = {
     mongo: {
         username: MONGO_USERNAME,
         password: MONGO_PASSWORD,
         url: MONGO_URL
+    },
+    gmail: {
+        username: GMAIL_USERNAME,
+        password: GMAIL_PASSWORD
     },
     server: {
         port: SERVER_PORT
