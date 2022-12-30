@@ -26,5 +26,10 @@ yarn-error.log*
 #folder
 public
 
+# Json files
 json
 *.json
+
+# mutlimedia files
+*.mp3
+*.mp4
