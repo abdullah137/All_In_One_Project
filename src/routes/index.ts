@@ -2,24 +2,16 @@ import express, { Request, Response } from 'express';
 import user from './user.routes';
 import shortner from './url.routes';
 import bgRemover from './bg.routes';
+import youtubeDownloader from './youtube.routes';
+import { homePage, healthCheck } from '../controller/base.controller';
 
 const router = express.Router();
 
 // Welcome Endpoint
-router.get('/', (req: Request, res: Response) => {
-    return res.json({
-        msg: 'Welcome to the all in one project',
-        status: 200
-    });
-});
+router.get('/', homePage);
 
 // healthcheck status
-router.get('/healthcheck', (req: Request, res: Response) => {
-    return res.json({
-        msg: 'Welcome to the all in one project',
-        status: 200
-    });
-});
+router.get('/healthcheck', healthCheck);
 
 // User Routes
 router.use(user);
@@ -29,5 +21,8 @@ router.use(shortner);
 
 // Background Remover Routes
 router.use(bgRemover);
+
+// Youtube downloader Routes
+router.use(youtubeDownloader);
 
 export default router;
