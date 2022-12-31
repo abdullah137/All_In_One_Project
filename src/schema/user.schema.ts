@@ -21,6 +21,14 @@ export const createUserSchema = object({
     })
 });
 
+export const forgetPasswordSchema = object({
+    body: object({
+        email: string({
+            required_error: 'Email is required'
+        }).email('not a valid email')
+    })
+});
+
 export const loginUserSchema = object({
     body: object({
         email: string({
@@ -60,5 +68,7 @@ export const updateUserProfile = object({
 export type CreateUserInput = Omit<TypeOf<typeof createUserSchema>, 'body.passwordConfimation'>;
 
 export type createSessionInput = TypeOf<typeof loginUserSchema>['body'];
+
+export type forgetPasswordInput = TypeOf<typeof forgetPasswordSchema>;
 
 export type updateUserInput = TypeOf<typeof updateUserProfile>;
