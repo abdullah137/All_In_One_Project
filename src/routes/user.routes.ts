@@ -1,8 +1,8 @@
 import express from 'express';
-import { createUserHandler, deleteSessionHandler, getUserProfile, loginUserHandler, updateUserProfile } from '../controller/user.controller';
+import { createUserHandler, deleteSessionHandler, getUserProfile, loginUserHandler, getUserSessionsHandler, forgetPassword, updateUserProfile, resetPassword } from '../controller/user.controller';
 import requireUser from '../middleware/requireUser';
 import validateResources from '../middleware/validateResource';
-import { createUserSchema, loginUserSchema } from '../schema/user.schema';
+import { createUserSchema, loginUserSchema, forgetPasswordSchema, resetPasswordSchema } from '../schema/user.schema';
 
 const router = express.Router();
 
@@ -20,5 +20,14 @@ router.patch('/users/profile', requireUser, updateUserProfile);
 
 // User Logout
 router.delete('/users/logout', requireUser, deleteSessionHandler);
+
+// User Forget Password
+router.post('/users/forget-password', validateResources(forgetPasswordSchema), forgetPassword);
+
+// Change user password
+router.post('/users/reset-password/:linkId', validateResources(resetPasswordSchema), resetPassword);
+
+// Get Sessions
+router.get('/users/sessions', requireUser, getUserSessionsHandler);
 
 export default router;
