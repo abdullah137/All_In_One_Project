@@ -1,4 +1,3 @@
-import { stubString } from 'lodash';
 import { object, string, TypeOf } from 'zod';
 
 export const createUserSchema = object({
@@ -28,6 +27,28 @@ export const forgetPasswordSchema = object({
         }).email('not a valid email')
     })
 });
+
+const resetPasswordPayload = {
+    body: object({
+        password: string({
+            required_error: 'Password is required'
+        }).min(5, 'Password is too short - should be 5 characters minimum'),
+        passwordConfirmation: string({
+            required_error: 'Password Confirmation is Required'
+        })
+    }).refine((data) => data.password === data.passwordConfirmation, {
+        message: 'Passwords do not match',
+        path: ['passwordConfirmation']
+    })
+};
+
+const resetPasswordParams = {
+    params: object({
+        linkId: string({
+            required_error: 'User ID is required'
+        })
+    })
+};
 
 export const loginUserSchema = object({
     body: object({
@@ -65,10 +86,17 @@ export const updateUserProfile = object({
     ...params
 });
 
+export const resetPasswordSchema = object({
+    ...resetPasswordPayload,
+    ...resetPasswordParams
+});
+
 export type CreateUserInput = Omit<TypeOf<typeof createUserSchema>, 'body.passwordConfimation'>;
 
 export type createSessionInput = TypeOf<typeof loginUserSchema>['body'];
 
 export type forgetPasswordInput = TypeOf<typeof forgetPasswordSchema>;
+
+export type resetPasswordInput = TypeOf<typeof resetPasswordSchema>;
 
 export type updateUserInput = TypeOf<typeof updateUserProfile>;
