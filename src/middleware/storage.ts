@@ -34,19 +34,13 @@ const filter = (req: Request, file: File, cb: NextFunction) => {
 
 const fileSize: number = 0.5 * 1024 * 1024;
 
-const uploader = multer({
-    storage: multer.memoryStorage(),
-    limits: {
-        fileSize: fileSize
-    }
-});
-
 const bucket = storage.bucket(config.firebase.bucket);
 
 // seting up multer for form data hadling
-const upload = multer({
+const uploader = multer({
     // storing image as buffer in memeory use in firebase
     storage: storageEngine({
+        bucket: config.firebase.bucket,
         keyFilename: path.resolve(config.firebase.privateKeyJson),
         projectId: config.firebase.projectId,
         bucketId: config.firebase.bucket,
@@ -58,4 +52,4 @@ const upload = multer({
     })
 });
 
-export { bucket };
+export { bucket, uploader };
