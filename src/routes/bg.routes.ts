@@ -1,8 +1,11 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import path from 'path';
-import { RemoveBgResult, RemoveBgError, removeBackgroundFromImageFile } from 'remove.bg';
 import multer from 'multer';
-import requireUser from '../middleware/requireUser';
+
+// Import the controller needed
+import { removeBackground, donwloadImage } from '../controller/bg.controller';
+
+const router = express.Router();
 
 // Setting multer storage
 const storage = multer.diskStorage({
@@ -10,39 +13,16 @@ const storage = multer.diskStorage({
         cb(null, path.join(__dirname, '../public/uploads/'));
     },
     filename: function (req, file, cb) {
-        let fields = file.originalname.split('.');
-        let fileType = fields[fields.length - 1];
         let randName = Date.now();
-        let newFileName = `${randName}.${fileType}`;
+        let newFileName = `${randName}.png`;
         cb(null, newFileName);
     }
 });
 
-const router = express.Router();
-
 const upload = multer({ storage: storage });
 
-router.post('/bg-remover', [requireUser, upload.single('uploaded_file')], (req: Request, res: Response) => {
-    const outputFile = path.join(__dirname, `../public/ouputs/img-removed.png`);
+router.post('/bg-remover', [upload.single('uploaded_file')], removeBackground);
 
-    const fileBody = req.file;
-
-    removeBackgroundFromImageFile({
-        // @ts-ignore
-        path: fileBody.path,
-        apiKey: 'a121RPvo7PfNFLC5DRewPHcM',
-        size: 'regular',
-        type: 'auto',
-        scale: '50%',
-        outputFile
-    })
-        .then((result: RemoveBgResult) => {
-            console.log(`File saved to ${outputFile}`);
-            const base64image = result.base64img;
-        })
-        .catch((errors: Array<RemoveBgError>) => {
-            console.log(JSON.stringify(errors));
-        });
-});
+router.get('/bg-remover/:filename', donwloadImage);
 
 export default router;
