@@ -1,5 +1,4 @@
 import { get } from 'lodash';
-import { Request, Response } from 'express';
 import SessionModel, { SessionDocument } from '../models/session.model';
 import { verifyJwt, signJwt } from '../utils/jwt';
 import { findUser } from './user.service';
@@ -16,6 +15,10 @@ export async function findSessions(query: FilterQuery<SessionDocument>) {
     return SessionModel.find(query).lean();
 }
 
+export async function findASession(query: FilterQuery<SessionDocument>) {
+    return await SessionModel.findOne(query).lean();
+}
+
 export async function reIssueToken({ refreshToken }: { refreshToken: string }) {
     const { decoded } = verifyJwt(refreshToken, 'REFRESH_TOKEN_PUBLIC_KEY');
 
@@ -30,7 +33,6 @@ export async function reIssueToken({ refreshToken }: { refreshToken: string }) {
     if (!user) return false;
 
     const accessToken = signJwt({ ...user, session: session._id }, 'ACCESS_TOKEN_PRIVATE_KEY', { expiresIn: config.token.refresh_token_timeline });
-
     return accessToken;
 }
 
