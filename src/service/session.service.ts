@@ -16,7 +16,7 @@ export async function findSessions(query: FilterQuery<SessionDocument>) {
 }
 
 export async function findASession(query: FilterQuery<SessionDocument>) {
-    return await SessionModel.findOne(query).lean();
+    return await SessionModel.findOne(query).sort({ updatedAt: -1 }).lean();
 }
 
 export async function reIssueToken({ refreshToken }: { refreshToken: string }) {
