@@ -22,7 +22,6 @@ export function verifyJwt(token: string, keyName: 'ACCESS_TOKEN_PUBLIC_KEY' | 'R
             decoded
         };
     } catch (e: any) {
-        logger.error(e);
         return {
             valid: false,
             expired: e.message === 'jwt expired',
