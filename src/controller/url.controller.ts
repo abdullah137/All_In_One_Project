@@ -26,7 +26,8 @@ type BilyOutput = {
 
 export async function createUrlHandler(req: Request, res: Response) {
     // User Session Object
-    const userId = res.locals.user._doc._id;
+    // @ts-ignore
+    const userId = req.user.id;
 
     // Body Object
     const body: UrlInput = req.body;
@@ -90,7 +91,7 @@ export async function createUrlHandler(req: Request, res: Response) {
             });
         } else {
             return res.status(500).json({
-                err: 'ERROR_MSG',
+                err: 'DB_ERROR',
                 status: false,
                 message: 'Sorry, an error occured'
             });
@@ -106,7 +107,8 @@ export async function createUrlHandler(req: Request, res: Response) {
 }
 
 export async function retriveLink(req: Request, res: Response) {
-    const user = res.locals.user;
+    // @ts-ignore
+    const user = req.user;
 
     // params
     const url = req.params.id as string;
@@ -121,7 +123,7 @@ export async function retriveLink(req: Request, res: Response) {
     }
 
     try {
-        const fetchLink = await findUrlInformation(url, user._doc._id);
+        const fetchLink = await findUrlInformation(url, user._id);
 
         if (!fetchLink) {
             return res.status(404).json({
@@ -149,14 +151,15 @@ export async function retriveLink(req: Request, res: Response) {
 
 export async function getAllLinks(req: Request, res: Response) {
     // Get User information
-    const user = res.locals.user;
+    // @ts-ignore
+    const user = req.user;
 
     try {
-        const getLinks = (await findAllLinks(user._doc._id)) as Array<object>;
+        const getLinks = (await findAllLinks(user._id)) as Array<object>;
 
         if (getLinks.length <= 0) {
             return res.status(200).json({
-                err: 'NO_LINK_FOR_USER',
+                message: 'NO_LINK_FOR_USER',
                 status: true,
                 msg: 'Sorry, you have no links yet'
             });
@@ -179,7 +182,8 @@ export async function getAllLinks(req: Request, res: Response) {
 
 export async function deleteLink(req: Request, res: Response) {
     // User Object
-    const user = res.locals.user;
+    // @ts-ignore
+    const user = req.user;
 
     // get delete url first
     const params = req.params.id as string;
@@ -204,7 +208,7 @@ export async function deleteLink(req: Request, res: Response) {
             });
         }
 
-        const deleteUrlBitly = await deleteUrl({ _id: params, user: new mongoose.Types.ObjectId(user._doc._id) });
+        const deleteUrlBitly = await deleteUrl({ _id: params, user: new mongoose.Types.ObjectId(user._id) });
 
         if (deleteUrlBitly) {
             return res.status(200).json({
