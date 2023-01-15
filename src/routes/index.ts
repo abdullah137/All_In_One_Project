@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import user from './user.routes';
 import shortner from './url.routes';
 import bgRemover from './bg.routes';
