@@ -110,9 +110,10 @@ export async function loginUserHandler(req: Request<{}, {}>, res: Response) {
 }
 
 export async function getUserSessionsHandler(req: Request, res: Response) {
-    const userId = res.locals.user._id;
+    // @ts-ignore
+    const userId = req.user._id;
 
-    const sessions = await findSessions({ user: userId, valid: true });
+    const sessions = await findSessions({ user: userId });
 
     return res.status(200).json({
         msg: 'USER_SESSIONS',
@@ -122,13 +123,13 @@ export async function getUserSessionsHandler(req: Request, res: Response) {
 }
 
 export async function deleteSessionHandler(req: Request, res: Response) {
-    const sessionId = res.locals.user.session;
-
-    console.log(sessionId);
+    // @ts-ignore
+    const sessionId = req.user.session;
 
     await updateSession({ _id: sessionId }, { valid: false });
 
-    res.locals.user = null;
+    // @ts-ignore
+    req.user = null;
 
     return res.status(200).json({
         msg: 'USER_LOGOUT_SUCCESSFULLY',
@@ -139,7 +140,8 @@ export async function deleteSessionHandler(req: Request, res: Response) {
 }
 
 export async function getUserProfile(req: Request, res: Response) {
-    const user = res.locals.user;
+    // @ts-ignore
+    const user = req.user;
 
     const username = user.username;
 
@@ -164,7 +166,8 @@ export async function getUserProfile(req: Request, res: Response) {
 }
 
 export async function updateUserProfile(req: Request<updateUserInput['params']>, res: Response) {
-    const userId = res.locals.user._id;
+    // @ts-ignore
+    const userId = req.user._id;
 
     const body = req.body;
 
