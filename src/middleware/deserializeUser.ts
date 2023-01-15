@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { get } from 'lodash';
-import { reIssueToken } from '../service/session.service';
+import { reIssueToken, findASession } from '../service/session.service';
 import { verifyJwt } from '../utils/jwt';
 
 const deserializeUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -13,10 +13,17 @@ const deserializeUser = async (req: Request, res: Response, next: NextFunction) 
     }
 
     // get decodec and expiry from the jwt
-    const { decoded, expired } = verifyJwt(accessToken, 'ACCESS_TOKEN_PUBLIC_KEY');
+    const { decoded, expired } = verifyJwt(accessToken, 'ACCESS_TOKEN_PUBLIC_KEY') as any;
+
+    const session = await findASession({ id: decoded?._id });
+
+    if (!session?.valid) {
+        return next();
+    }
 
     if (decoded) {
-        res.locals.user = decoded;
+        // @ts-ignore
+        req.user = decoded;
         return next();
     }
 
@@ -28,11 +35,12 @@ const deserializeUser = async (req: Request, res: Response, next: NextFunction) 
 
             const result = verifyJwt(newAccesstoken as string, 'ACCESS_TOKEN_PUBLIC_KEY');
 
-            res.locals.user = result.decoded;
+            // @ts-ignore
+            req.user = result.decoded;
             return next();
         }
     } else {
-        return res.status(400).json({
+        return res.status(403).json({
             err: 'ACCESS_TOKEN_EXPRIES',
             status: false,
             message: 'Please Enter A New Access Token '
