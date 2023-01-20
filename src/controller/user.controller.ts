@@ -25,7 +25,7 @@ export async function createUserHandler(req: Request<{}, {}, CreateUserInput['bo
             return res.status(400).json({
                 error: 'USER_ALREADY_EXIST',
                 status: false,
-                msg: 'Sorry, user already exists. Kindly Use A Email Address'
+                msg: 'Sorry, user already exists. Kindly Use A New Email'
             });
         }
 
