@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import logger from './logger';
 import { config } from '../../config/default';
 
 export function signJwt(object: Object, keyName: 'ACCESS_TOKEN_PRIVATE_KEY' | 'REFRESH_TOKEN_PRIVATE_KEY', options?: jwt.SignOptions | undefined) {

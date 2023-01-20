@@ -20,8 +20,8 @@ export async function findASession(query: FilterQuery<SessionDocument>) {
 }
 
 export async function reIssueToken({ refreshToken }: { refreshToken: string }) {
-    const { decoded } = verifyJwt(refreshToken, 'REFRESH_TOKEN_PUBLIC_KEY');
-
+    const { decoded } = verifyJwt(refreshToken, 'ACCESS_TOKEN_PUBLIC_KEY');
+    console.log(decoded);
     if (!decoded || !get(decoded, 'session')) return false;
 
     const session = await SessionModel.findById(get(decoded, 'session'));

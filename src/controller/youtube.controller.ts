@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import ytdl from 'ytdl-core';
 import { isValidHttpUrl } from '../utils/functions';
+import Fs from 'fs';
+import Https from 'https';
 
 export async function getyoubueLink(req: Request, res: Response) {
     const body: { url: string } = req.body;
@@ -67,4 +69,36 @@ export async function getyoubueLink(req: Request, res: Response) {
             message: 'Sorry, an internal errror occured'
         });
     }
+}
+
+export async function downloadFile(req: Request, res: Response) {
+    async function download(url: string, targetFile: string) {
+        Https.get(url, (response) => {
+            const code = response.statusCode ?? 0;
+
+            if (code >= 400) {
+                return Promise.reject(new Error(response.statusMessage));
+            }
+
+            // handle redirects
+            if (code > 300 && code < 400 && !!response.headers.location) {
+                return Promise.resolve(download(response.headers.location, targetFile));
+            }
+
+            // save the file to disk
+            const fileWriter = Fs.createWriteStream(targetFile).on('finish', () => {
+                Promise.resolve({});
+            });
+
+            response.pipe(fileWriter);
+        }).on('error', (error) => {
+            Promise.reject(error);
+        });
+    }
+
+    const targetFile = 'audio.mp4';
+    const wallpaperUrl =
+        'https://rr2---sn-huoob-avns.googlevideo.com/videoplayback?expire=1673560348&ei=vCzAY4LfJ5HasALWmYmYBw&ip=102.89.42.138&id=o-ADez1D_cGkmH44rrz64wRDE38LCXFujLctx1C9m2JKl9&itag=140&source=youtube&requiressl=yes&mh=jV&mm=31%2C29&mn=sn-huoob-avns%2Csn-avn7ln7e&ms=au%2Crdu&mv=m&mvi=2&pl=24&initcwndbps=211250&vprv=1&mime=audio%2Fmp4&ns=Fu87_SnbK7puCIFJ6h0RcTwK&gir=yes&clen=11128544&dur=687.589&lmt=1673140694711466&mt=1673538316&fvip=2&keepalive=yes&fexp=24007246&c=WEB&txp=5532434&n=1jZ7AeR-ZZhrsg&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cvprv%2Cmime%2Cns%2Cgir%2Cclen%2Cdur%2Clmt&sig=AOq0QJ8wRgIhAOZEdZs-8AVMGAgTgomeL8GJxRRgW2QXHC70zWTP5XGRAiEAmFiU-gMemdgmwEKEVM6uN2BmQ0ekLqFiGpjdYd_Feg8%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRAIgbIdaf36q0mNcX2yH-yb1_V3ZZIP90EPwRqGBv4-viRACIFLNh0WJ_8aLWKpW2weKdQPCkAE6qy_AMDTMzSItaqE-';
+
+    await download(wallpaperUrl, targetFile);
 }
