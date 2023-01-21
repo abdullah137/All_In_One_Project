@@ -56,7 +56,7 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "start": "node build/app.js ",
+        "start": "node build/src/app.js ",
         "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
         "build": "tsc"
     }
