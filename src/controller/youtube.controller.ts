@@ -5,10 +5,10 @@ import Fs from 'fs';
 import Https from 'https';
 
 export async function getyoubueLink(req: Request, res: Response) {
-    const body: { url: string } = req.body;
+    const { link } = req.query;
 
     // check if the string is empty
-    if (body.url == '' || !body.url) {
+    if (link == '' || !link) {
         return res.status(400).json({
             error: 'FIELD_MISSING',
             status: false,
@@ -17,7 +17,7 @@ export async function getyoubueLink(req: Request, res: Response) {
     }
 
     // check for the validity of url
-    const isValidUrl = isValidHttpUrl(body.url);
+    const isValidUrl = isValidHttpUrl(link as string);
     if (!isValidUrl) {
         return res.status(400).json({
             error: 'INVALID_URL',
@@ -27,7 +27,7 @@ export async function getyoubueLink(req: Request, res: Response) {
     }
 
     try {
-        let info = await ytdl.getInfo(body.url);
+        let info = await ytdl.getInfo(link as string);
 
         // let videoAndAudido = ytdl.filterFormats(info.formats, 'videoandaudio');
         let audio = ytdl.filterFormats(info.formats, 'audioonly');
