@@ -5,6 +5,7 @@ import logger from './utils/logger';
 import connectDatabase from './database/connect';
 import deserializeUser from './middleware/deserializeUser';
 import router from './routes';
+import cors from 'cors';
 
 const app = express();
 
@@ -15,6 +16,16 @@ app.use(deserializeUser);
 
 // All routes are here
 app.use(router);
+
+// Handling cors request
+app.use(
+    cors({
+        origin: true,
+        methods: ['POST', 'GET', 'PATCH', 'DELETE', 'OPTIONS', 'PUT'],
+        credentials: true,
+        maxAge: 3600
+    })
+);
 
 // Error Handlers for 404
 app.all('*', (req: Request, res: Response) => {
