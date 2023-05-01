@@ -15,9 +15,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(deserializeUser);
 
-// All routes are here
-app.use(router);
-
 // Handling cors request
 app.use(
     cors({
@@ -46,6 +43,10 @@ app.use(
         }
     })
 );
+
+// All routes are here
+app.use(router);
+
 // Error Handlers for 404
 app.all('*', (req: Request, res: Response) => {
     return res.status(404).json({
