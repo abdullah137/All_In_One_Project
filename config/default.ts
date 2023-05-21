@@ -27,6 +27,7 @@ const PROJECT_ID = process.env.PROJECT_ID ? String(process.env.PROJECT_ID) : '';
 
 const GMAIL_USERNAME = process.env.GMAIL_USERNAME ? String(process.env.GMAIL_USERNAME) : '';
 const GMAIL_PASSWORD = process.env.GMAIL_PASSWORD ? String(process.env.GMAIL_PASSWORD) : '';
+const YOUTUBE_KEY = process.env.YOUTUBE_KEY ? String(process.env.YOUTUBE_KEY) : '';
 
 export const config = {
     mongo: {
@@ -51,6 +52,7 @@ export const config = {
         refresh_token_timeline: REFRESH_TOKEN_TIMELINE
     },
     thirdParty: {
+        youtube: YOUTUBE_KEY,
         bitlyAccesssToken: BITLY_ACCESS_TOKEN
     },
     firebase: {
