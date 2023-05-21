@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import ytdl from 'ytdl-core';
 import { isValidHttpUrl } from '../utils/functions';
+import axios from 'axios';
 import Fs from 'fs';
 import Https from 'https';
+import { config } from '../../config/default';
 
 export async function getyoubueLink(req: Request, res: Response) {
     const { link } = req.query;
@@ -16,6 +18,28 @@ export async function getyoubueLink(req: Request, res: Response) {
         });
     }
 
+    // get the youtube link
+    const getVideoUrl = typeof link === 'string' ? link.split('=')[1] : '';
+
+    // Make a request to get video details
+    const getVideoDetials: string = `https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&id=${getVideoUrl}&key=${config.thirdParty.youtube}
+`;
+
+    // get youtube data
+    try {
+        const youtubeResponse = await axios.get(getVideoDetials);
+
+        const { data } = youtubeResponse;
+
+        var youtubeImages = data.items[0].snippet.thumbnails.default;
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            error: 'INTERNAL_ERRROR',
+            status: false,
+            message: 'Sorry, an internal error occured. Please try again later'
+        });
+    }
     // check for the validity of url
     const isValidUrl = isValidHttpUrl(link as string);
     if (!isValidUrl) {
@@ -45,6 +69,7 @@ export async function getyoubueLink(req: Request, res: Response) {
         return res.status(200).json({
             msg: 'QUERY_SUCCESSFUL',
             status: true,
+            thumbailImge: youtubeImages,
             audioOnly: audioLinks,
             video: videoLinks
         });
