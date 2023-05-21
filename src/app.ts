@@ -21,17 +21,6 @@ app.use(
         origin(requestOrigin, callback) {
             // allow all for now
             return callback(null, true);
-
-            // switch to this when you want to restrict the origin
-            // if (requestOrigin === undefined) {
-            //     return callback(null, true);
-            // }
-            // const o = new URL(requestOrigin);
-            // // check if TLD is in the list of allowed TLDs
-            // if (env.allowedTLDs.includes(o.hostname)) {
-            //   return callback(null, true);
-            // }
-            // return callback(new Error('Not allowed by CORS'));
         },
         optionsSuccessStatus: 204
     })
