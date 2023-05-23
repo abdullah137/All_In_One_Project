@@ -87,6 +87,8 @@ export async function getyoubueLink(req: Request, res: Response) {
             });
         }
 
+        console.log(e);
+
         // return an internal error
         return res.status(500).json({
             err: 'INTERNAL_ERROR',
